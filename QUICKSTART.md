@@ -10,7 +10,7 @@ csc-ep-tool/
 ├── app.py                      # Flask application (fully functional)
 ├── requirements.txt            # Python dependencies
 ├── data/
-│   ├── polling_places.json    # 20 mock polling places
+│   ├── polling_places.json    # 20 mock polling places (Virginia)
 │   └── reports.json           # 8 mock reports
 ├── templates/
 │   ├── base.html              # Base layout with Bootstrap 5
