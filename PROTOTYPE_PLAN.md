@@ -7,7 +7,7 @@
 **What's IN the prototype**:
 - ✅ Flask web app with basic routing
 - ✅ Mock authentication (simple login form, no real OAuth)
-- ✅ Sample polling place data (20-30 locations)
+- ✅ Sample polling place data (1000 locations across Virginia)
 - ✅ Simple risk score calculation (formula-based, no ML)
 - ✅ Polling place list view (filterable, sortable)
 - ✅ Polling place detail page
@@ -245,8 +245,8 @@ python app.py
 ## Deliverables
 
 1. ✅ Working Flask application
-2. ✅ 20-30 mock polling places
-3. ✅ 5-10 mock reports
+2. ✅ 1000 mock polling places across Virginia
+3. ✅ 75 mock reports
 4. ✅ List view with filters/sort
 5. ✅ Detail page with reports
 6. ✅ Interactive map
