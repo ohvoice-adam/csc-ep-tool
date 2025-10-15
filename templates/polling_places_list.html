@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Polling Places - Election Protection Tool{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Polling Places</h1>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Filters</h5>
+            <form method="GET" action="{{ url_for('polling_places_list') }}" class="row g-3">
+                <div class="col-md-3">
+                    <label for="county" class="form-label">County</label>
+                    <select class="form-select" id="county" name="county">
+                        <option value="">All Counties</option>
+                        {% for county in counties %}
+                        <option value="{{ county }}" {% if county == current_county %}selected{% endif %}>{{ county }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="risk_min" class="form-label">Min Risk Score</label>
+                    <input type="number" class="form-control" id="risk_min" name="risk_min" min="0" max="100" value="{{ current_risk_min }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="risk_max" class="form-label">Max Risk Score</label>
+                    <input type="number" class="form-control" id="risk_max" name="risk_max" min="0" max="100" value="{{ current_risk_max }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="sort" class="form-label">Sort By</label>
+                    <select class="form-select" id="sort" name="sort">
+                        <option value="risk_score" {% if current_sort == 'risk_score' %}selected{% endif %}>Risk Score</option>
+                        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Name</option>
+                        <option value="county" {% if current_sort == 'county' %}selected{% endif %}>County</option>
+                        <option value="total_voters" {% if current_sort == 'total_voters' %}selected{% endif %}>Total Voters</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <a href="{{ url_for('polling_places_list') }}" class="btn btn-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="mb-3">
+        <strong>{{ polling_places|length }}</strong> polling places found
+    </div>
+
+    <!-- Polling Places Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>County</th>
+                    <th>Risk Score</th>
+                    <th>Voters</th>
+                    <th>Reports</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for place in polling_places %}
+                <tr>
+                    <td>{{ place.name }}</td>
+                    <td>{{ place.county }}</td>
+                    <td>
+                        <span class="badge risk-badge risk-{{ 'high' if place.risk_score >= 67 else 'medium' if place.risk_score >= 34 else 'low' }}">
+                            {{ place.risk_score }}
+                        </span>
+                    </td>
+                    <td>{{ place.total_voters }}</td>
+                    <td>
+                        {% if place.report_count > 0 %}
+                        <span class="badge bg-warning text-dark">{{ place.report_count }}</span>
+                        {% else %}
+                        <span class="text-muted">0</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('polling_place_detail', place_id=place.id) }}" class="btn btn-sm btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

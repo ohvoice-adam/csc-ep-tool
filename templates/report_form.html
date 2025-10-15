@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Report - Election Protection Tool{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Submit Problem Report</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('submit_report') }}">
+                        <div class="mb-3">
+                            <label for="polling_place_id" class="form-label">Polling Place *</label>
+                            <select class="form-select" id="polling_place_id" name="polling_place_id" required>
+                                <option value="">-- Select a polling place --</option>
+                                {% for place in polling_places %}
+                                <option value="{{ place.id }}" {% if place.id == preselected_place_id %}selected{% endif %}>
+                                    {{ place.name }} - {{ place.county }} County
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="reporter_name" class="form-label">Your Name *</label>
+                            <input type="text" class="form-control" id="reporter_name" name="reporter_name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="reporter_email" class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="reporter_email" name="reporter_email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="reporter_phone" class="form-label">Phone Number (Optional)</label>
+                            <input type="tel" class="form-control" id="reporter_phone" name="reporter_phone">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="issue_type" class="form-label">Issue Type *</label>
+                            <select class="form-select" id="issue_type" name="issue_type" required>
+                                <option value="">-- Select issue type --</option>
+                                <option value="Long lines">Long lines / Wait times</option>
+                                <option value="Equipment failure">Equipment failure (voting machines)</option>
+                                <option value="Equipment failure">Equipment failure (check-in)</option>
+                                <option value="Accessibility issue">Accessibility issue</option>
+                                <option value="Staffing problem">Staffing problem</option>
+                                <option value="Voter intimidation">Voter intimidation</option>
+                                <option value="ID requirements issue">ID requirements issue</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description *</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" required placeholder="Please provide details about the issue you're reporting..."></textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <small>
+                                <strong>Note:</strong> Your report will be reviewed by election protection staff.
+                                All required fields must be completed. Your contact information will only be used to follow up on this report.
+                            </small>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('polling_places_list') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-warning">Submit Report</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

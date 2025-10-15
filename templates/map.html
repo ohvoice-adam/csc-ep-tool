@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Map - Election Protection Tool{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-12">
+            <h1 class="mb-3">Polling Places Map</h1>
+
+            <!-- Map container -->
+            <div id="map" style="height: 80vh; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+
+            <!-- Legend -->
+            <div class="card mt-3" style="max-width: 300px;">
+                <div class="card-body">
+                    <h6 class="card-title">Risk Levels</h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <div style="width: 20px; height: 20px; background-color: #dc3545; border-radius: 50%; margin-right: 10px;"></div>
+                        <span>High Risk (67-100)</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div style="width: 20px; height: 20px; background-color: #ffc107; border-radius: 50%; margin-right: 10px;"></div>
+                        <span>Medium Risk (34-66)</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div style="width: 20px; height: 20px; background-color: #28a745; border-radius: 50%; margin-right: 10px;"></div>
+                        <span>Low Risk (0-33)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize map centered on Ohio
+    const map = L.map('map').setView([40.4173, -82.9071], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Fetch polling places data
+    fetch('{{ url_for("api_polling_places") }}')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(place => {
+                // Determine marker color based on risk score
+                let color = '#28a745'; // green (low)
+                if (place.risk_score >= 67) {
+                    color = '#dc3545'; // red (high)
+                } else if (place.risk_score >= 34) {
+                    color = '#ffc107'; // yellow (medium)
+                }
+
+                // Create custom icon
+                const icon = L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background-color: ${color}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+
+                // Create marker
+                const marker = L.marker([place.latitude, place.longitude], { icon: icon }).addTo(map);
+
+                // Create popup content
+                const popupContent = `
+                    <div style="min-width: 200px;">
+                        <h6 style="margin-bottom: 10px;">${place.name}</h6>
+                        <p style="margin-bottom: 5px;"><strong>Risk Score:</strong> ${place.risk_score}</p>
+                        <p style="margin-bottom: 5px;"><strong>County:</strong> ${place.county}</p>
+                        <p style="margin-bottom: 5px;"><strong>Voters:</strong> ${place.total_voters}</p>
+                        <p style="margin-bottom: 10px;"><strong>Active Reports:</strong> ${place.report_count}</p>
+                        <a href="/polling-places/${place.id}" class="btn btn-sm btn-primary">View Details</a>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading polling places:', error);
+        });
+</script>
+{% endblock %}

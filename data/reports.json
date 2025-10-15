@@ -1,0 +1,90 @@
+[
+  {
+    "id": "rpt-001",
+    "polling_place_id": "pp-001",
+    "reporter_name": "Sarah Johnson",
+    "reporter_email": "sarah.j@example.com",
+    "reporter_phone": "614-555-0101",
+    "issue_type": "Long lines",
+    "description": "Wait time is over 2 hours. Many elderly voters are struggling to stand in line.",
+    "timestamp": "2024-11-05T08:30:00Z",
+    "status": "reported"
+  },
+  {
+    "id": "rpt-002",
+    "polling_place_id": "pp-002",
+    "reporter_name": "Michael Chen",
+    "reporter_email": "m.chen@example.com",
+    "reporter_phone": "216-555-0202",
+    "issue_type": "Equipment failure",
+    "description": "Two voting machines are down. Poll workers are trying to get replacements.",
+    "timestamp": "2024-11-05T09:15:00Z",
+    "status": "investigating"
+  },
+  {
+    "id": "rpt-003",
+    "polling_place_id": "pp-002",
+    "reporter_name": "Emily Rodriguez",
+    "reporter_email": "emily.r@example.com",
+    "reporter_phone": "216-555-0303",
+    "issue_type": "Staffing problem",
+    "description": "Only 3 poll workers for a very busy location. Check-in is very slow.",
+    "timestamp": "2024-11-05T10:45:00Z",
+    "status": "reported"
+  },
+  {
+    "id": "rpt-004",
+    "polling_place_id": "pp-009",
+    "reporter_name": "David Kim",
+    "reporter_email": "david.k@example.com",
+    "reporter_phone": "440-555-0404",
+    "issue_type": "Accessibility issue",
+    "description": "Wheelchair ramp is blocked by temporary fencing. Disabled voters cannot enter.",
+    "timestamp": "2024-11-05T07:20:00Z",
+    "status": "resolved"
+  },
+  {
+    "id": "rpt-005",
+    "polling_place_id": "pp-011",
+    "reporter_name": "Jessica Martinez",
+    "reporter_email": "j.martinez@example.com",
+    "reporter_phone": "614-555-0505",
+    "issue_type": "Long lines",
+    "description": "Over 200 people in line at 7am. Not enough voting machines for this precinct.",
+    "timestamp": "2024-11-05T07:05:00Z",
+    "status": "investigating"
+  },
+  {
+    "id": "rpt-006",
+    "polling_place_id": "pp-014",
+    "reporter_name": "Robert Taylor",
+    "reporter_email": "r.taylor@example.com",
+    "reporter_phone": "216-555-0606",
+    "issue_type": "Equipment failure",
+    "description": "Check-in tablets are not working. Poll workers are using paper backup lists.",
+    "timestamp": "2024-11-05T08:50:00Z",
+    "status": "reported"
+  },
+  {
+    "id": "rpt-007",
+    "polling_place_id": "pp-014",
+    "reporter_name": "Amanda White",
+    "reporter_email": "a.white@example.com",
+    "reporter_phone": "216-555-0707",
+    "issue_type": "Long lines",
+    "description": "Lines wrapping around the building. Estimated 3+ hour wait.",
+    "timestamp": "2024-11-05T11:20:00Z",
+    "status": "reported"
+  },
+  {
+    "id": "rpt-008",
+    "polling_place_id": "pp-016",
+    "reporter_name": "Christopher Lee",
+    "reporter_email": "c.lee@example.com",
+    "reporter_phone": "216-555-0808",
+    "issue_type": "ID requirements issue",
+    "description": "Poll workers are requiring photo ID from all voters, including those with utility bills.",
+    "timestamp": "2024-11-05T09:35:00Z",
+    "status": "investigating"
+  }
+]

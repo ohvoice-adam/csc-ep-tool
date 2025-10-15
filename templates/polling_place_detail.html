@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}{{ place.name }} - Election Protection Tool{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('polling_places_list') }}">Polling Places</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ place.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Left column: Place info -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h2 class="card-title mb-0">{{ place.name }}</h2>
+                        <span class="badge risk-badge risk-{{ 'high' if place.risk_score >= 67 else 'medium' if place.risk_score >= 34 else 'low' }}" style="font-size: 1.5rem;">
+                            Risk: {{ place.risk_score }}
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Address:</strong><br>
+                        {{ place.address }}<br>
+                        {{ place.city }}, {{ place.state }} {{ place.zip }}<br>
+                        <strong>County:</strong> {{ place.county }}
+                    </div>
+
+                    <div class="mb-3">
+                        <a href="https://www.google.com/maps?q={{ place.latitude }},{{ place.longitude }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            View on Google Maps
+                        </a>
+                        <a href="{{ url_for('submit_report', polling_place_id=place.id) }}" class="btn btn-sm btn-warning">
+                            Submit Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-label">Total Registered Voters</div>
+                                <div class="stat-value">{{ place.total_voters }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-label">Multi-State Registrations</div>
+                                <div class="stat-value">{{ place.multi_state_registrations }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-label">Recent Registrations</div>
+                                <div class="stat-value">{{ place.recent_registrations }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-label">Purged Voters</div>
+                                <div class="stat-value">{{ place.purged_voters }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Reports -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">User Reports ({{ reports|length }})</h5>
+                    <a href="{{ url_for('submit_report', polling_place_id=place.id) }}" class="btn btn-sm btn-warning">
+                        + New Report
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if reports %}
+                        {% for report in reports %}
+                        <div class="report-card mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>
+                                    <strong>{{ report.reporter_name }}</strong>
+                                    <span class="badge bg-info">{{ report.issue_type }}</span>
+                                    <span class="badge bg-{{ 'success' if report.status == 'resolved' else 'warning' if report.status == 'investigating' else 'secondary' }}">
+                                        {{ report.status }}
+                                    </span>
+                                </div>
+                                <small class="text-muted">{{ report.timestamp[:10] }} {{ report.timestamp[11:16] }}</small>
+                            </div>
+                            <p class="mb-1">{{ report.description }}</p>
+                            <small class="text-muted">Contact: {{ report.reporter_email }}</small>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No reports submitted for this location yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column: Mini map -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-header">
+                    <h5 class="mb-0">Location</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div id="detail-map" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize map
+    const map = L.map('detail-map').setView([{{ place.latitude }}, {{ place.longitude }}], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Add marker
+    const marker = L.marker([{{ place.latitude }}, {{ place.longitude }}]).addTo(map);
+    marker.bindPopup('<strong>{{ place.name }}</strong>').openPopup();
+</script>
+{% endblock %}

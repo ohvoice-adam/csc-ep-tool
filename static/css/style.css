@@ -1,0 +1,181 @@
+/* Custom styles for Election Protection Tool */
+
+:root {
+    --risk-high: #dc3545;
+    --risk-medium: #ffc107;
+    --risk-low: #28a745;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Risk badges */
+.risk-badge {
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.risk-high {
+    background-color: var(--risk-high) !important;
+    color: white !important;
+}
+
+.risk-medium {
+    background-color: var(--risk-medium) !important;
+    color: #000 !important;
+}
+
+.risk-low {
+    background-color: var(--risk-low) !important;
+    color: white !important;
+}
+
+/* Statistics cards */
+.stat-card {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #212529;
+}
+
+/* Report cards */
+.report-card {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s;
+}
+
+.report-card:hover {
+    background-color: #e9ecef;
+}
+
+/* Table improvements */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Map containers */
+#map, #detail-map {
+    border-radius: 8px;
+    z-index: 1;
+}
+
+/* Custom marker styles for Leaflet */
+.custom-marker {
+    background: none;
+    border: none;
+}
+
+/* Accessibility improvements */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 768px) {
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .table {
+        font-size: 0.875rem;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    nav, footer, .btn, .alert {
+        display: none !important;
+    }
+
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Loading state */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0,0,0,.1);
+    border-radius: 50%;
+    border-top-color: #0d6efd;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Enhanced contrast for WCAG compliance */
+.text-muted {
+    color: #5a6268 !important;
+}
+
+a {
+    text-decoration: underline;
+}
+
+.nav-link {
+    text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    text-decoration: underline;
+}
+
+/* Alert improvements */
+.alert {
+    border-left: 4px solid;
+}
+
+.alert-info {
+    border-left-color: #0dcaf0;
+}
+
+.alert-success {
+    border-left-color: #198754;
+}
+
+.alert-danger {
+    border-left-color: #dc3545;
+}
+
+.alert-warning {
+    border-left-color: #ffc107;
+}
